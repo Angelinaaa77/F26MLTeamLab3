@@ -346,7 +346,7 @@ def causal_mask(n):
     Hint: np.triu(..., k=1)
     """
     # YOUR CODE HERE
-    raise NotImplementedError
+    return np.triu(np.ones((n, n), dtype=bool), k=1)
 
 # ============================================================================
 # 2. Scaled dot-product attention:   softmax(Q K^T / sqrt(d_k)) V
@@ -385,7 +385,13 @@ def attention(Q, K, V, mask=True):
                         [0.330, 0.670]]
     """
     # YOUR CODE HERE
-    raise NotImplementedError
+    n, d_k = Q.shape[-2], Q.shape[-1]
+    scores = Q @ K.swapaxes(-1, -2) / np.sqrt(d_k)  # (n, n) or (n_heads, n, n)
+    if mask:
+        scores = np.where(causal_mask(n), -np.inf, scores)
+    weights = softmax(scores)  # (n, n) or (n_heads, n, n)
+    output = weights @ V  # (n, d_v) or (n_heads, n, d_v)
+    return output, weights
 
 # ============================================================================
 # 3. Multiple heads  (GPT-2: 12 heads, each gets a 64-dim slice of Q, K, V)
@@ -412,7 +418,9 @@ def split_heads(x, n_heads):
     Hint: reshape to (n, n_heads, d_head), then transpose(1, 0, 2).
     """
     # YOUR CODE HERE
-    raise NotImplementedError
+    n,d = x.shape
+    d_head = d // n_heads
+    return x.reshape(n, n_heads, d_head).transpose(1, 0, 2)
 
 
 def merge_heads(x):
@@ -431,7 +439,8 @@ def merge_heads(x):
         merge_heads(split_heads(x, n_heads)) should give back x exactly.
     """
     # YOUR CODE HERE
-    raise NotImplementedError
+    n_heads, n, d_head = x.shape
+    return x.transpose(1, 0, 2).reshape(n, n_heads * d_head)
 
 
 def multi_head_attention(x, block, n_heads=N_HEADS):
@@ -459,7 +468,14 @@ def multi_head_attention(x, block, n_heads=N_HEADS):
         x.shape = (6, 768)   ->   output.shape = (6, 768),   weights.shape = (12, 6, 6)
     """
     # YOUR CODE HERE
-    raise NotImplementedError
+    qkv = x @ block["W_qkv"] + block["b_qkv"]  # (n, 3d)
+    Q, K, V = np.split(qkv, 3, axis=-1)
+    Q = split_heads(Q, n_heads)  # (n_heads, n, d_head)
+    K = split_heads(K, n_heads)  # (n_heads, n, d_head)
+    V = split_heads(V, n_heads)  # (n_heads, n, d_head)
+    out, weights = attention(Q, K, V, mask=True)  # (n_heads, n, d_head), (n_heads, n, n)
+    out = merge_heads(out) @ block["W_O"] + block["b_O"]  # (n, d)
+    return out, weights
 
 # ============================================================================
 # 4. Finding heads that do specific jobs
@@ -487,7 +503,12 @@ def head_scores(cache, offset):
           picks those entries for every head at once, shape (n_heads, n - offset). Average over the last axis.
     """
     # YOUR CODE HERE
-    raise NotImplementedError
+    scores = []
+    for w in cache:
+        n = w.shape[-1]
+        i = np.arange(offset, n)
+        scores.append(w[:, i, i - offset].mean(axis=-1))
+    return np.array(scores)
 
 
 # Provided helpers for section 4
