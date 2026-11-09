@@ -4,7 +4,19 @@ Angelina Huang's Lab 3: GPT-2 small written from scratch in NumPy.
 
 ## Part 1: forward pass without attention
 
-[lab3_part1_angelina_huang.py](lab3_part1_angelina_huang.py) covers embeddings, positional embeddings, the MLP, transformer blocks, unembedding, softmax with temperature, sampling and text generation. Attention is left as a placeholder that returns zeros.
+[lab3_part1_angelina_huang.py](lab3_part1_angelina_huang.py) adds:
+
+- `embed`: looks up each token's embedding vector
+- `add_positions`: adds each position's positional embedding
+- `mlp`: the feed-forward layer, expanding to 4d with gelu and shrinking back to d
+- `transformer_block`: layer norm, attention and MLP, each added to the residual stream
+- `unembed`: turns each vector back into a score for every vocabulary token
+- `forward`: the whole model, from token IDs to logits
+- `softmax`: converts logits to probabilities, with temperature
+- `sample`: picks the next token, greedy or random
+- `generate`: produces text one token at a time
+
+Attention is left as a placeholder that returns zeros, so each token cannot see the others.
 
 ## Part 2: attention
 
