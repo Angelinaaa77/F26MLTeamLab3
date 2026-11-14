@@ -29,8 +29,8 @@ and from lab_utils: layer_norm(), gelu(), enc (the tokenizer), params (GPT-2's w
 
 How to work:
     1. Fill in every "YOUR CODE HERE" in this file.
-    2. Check your work:   python test_part1.py         (or e.g.  python test_part1.py softmax)
-    3. Running this file itself (python lab3_part1.py) shows how GPT-2 splits text into tokens.
+    2. Check your work:   python test_gpt2_no_attention.py         (or e.g.  python test_gpt2_no_attention.py softmax)
+    3. Running this file itself (python gpt2_no_attention.py) shows how GPT-2 splits text into tokens.
 """
 import numpy as np
 from lab_utils import enc, EOS, N_HEADS, params, layer_norm, gelu
@@ -326,4 +326,4 @@ def generate(prompt, max_new_tokens=20, T=1.0, greedy=False):
 
 if __name__ == "__main__":
     explore_tokens()
-    print("\nTo check your functions, run:  python test_part1.py")
+    print("\nTo check your functions, run:  python test_gpt2_no_attention.py")

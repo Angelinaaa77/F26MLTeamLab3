@@ -29,9 +29,9 @@ From lab_utils.py (same file as Part 1):  enc (tokenizer), EOS, N_HEADS (= 12), 
     and check_against_gpt2().
 
 How to work:
-    1. Put this file and test_part2.py in the same folder as lab_utils.py (from Part 1).
+    1. Put this file and test_gpt2_with_attention.py in the same folder as lab_utils.py (from Part 1).
     2. Fill in every "YOUR CODE HERE" in this file, in order.
-    3. Check your work:   python test_part2.py         (or e.g.  python test_part2.py mask)
+    3. Check your work:   python test_gpt2_with_attention.py         (or e.g.  python test_gpt2_with_attention.py mask)
 """
 import numpy as np
 from lab_utils import enc, EOS, N_HEADS, params, layer_norm, gelu
@@ -557,6 +557,6 @@ def top_heads(scores, k=5):
         print(f"  layer {layer:2d}, head {head:2d}: {scores[layer, head]:.2f}")
 
 if __name__ == "__main__":
-    print("To check your functions, run:  python test_part2.py")
+    print("To check your functions, run:  python test_gpt2_with_attention.py")
     # Once attention works, uncomment to see a heatmap of one head:
     # plot_attention("The old cat sat on the mat because it was tired.", layer=4, head=11)

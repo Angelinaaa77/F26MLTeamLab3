@@ -1,8 +1,8 @@
 """
 Tests for Lab 3, Part 1. Don't edit this file.
 
-    python test_part1.py               run every test on your lab3_part1.py
-    python test_part1.py softmax       run only the tests whose name contains "softmax"
+    python test_gpt2_no_attention.py               run every test on your gpt2_no_attention.py
+    python test_gpt2_no_attention.py softmax       run only the tests whose name contains "softmax"
 
 Each test prints ✅ / ❌ (with what you got vs. what was expected), or ⏭ if you haven't written it yet.
 """
@@ -10,8 +10,8 @@ import sys, importlib
 import numpy as np
 from lab_utils import enc, EOS, N_HEADS, params, check, show_top_k, run_tests, check_against_gpt2
 
-# Load your functions from lab3_part1.py  (instructors: add --solution to test the answer key)
-_module = importlib.import_module("lab3_part1_solution" if "--solution" in sys.argv else "lab3_part1")
+# Load your functions from gpt2_no_attention.py  (instructors: add --solution to test the answer key)
+_module = importlib.import_module("lab3_part1_solution" if "--solution" in sys.argv else "gpt2_no_attention")
 globals().update({k: v for k, v in vars(_module).items() if not k.startswith("_")})
 _filters = [a.lower() for a in sys.argv[1:] if not a.startswith("--")]
 

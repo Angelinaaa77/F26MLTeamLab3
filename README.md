@@ -1,10 +1,10 @@
-# F26 ML Team Lab 3
+# GPT-2 from Scratch in NumPy
 
-Angelina Huang's Lab 3: GPT-2 small written from scratch in NumPy.
+Angelina Huang's F26 ML Team Lab 3: the forward pass of GPT-2 small written from scratch in NumPy, first without attention and then with multi-head attention.
 
-## Part 1: forward pass without attention
+## Step 1: GPT-2 without attention
 
-[lab3_part1_angelina_huang.py](lab3_part1_angelina_huang.py) adds:
+[gpt2_no_attention.py](gpt2_no_attention.py) adds:
 
 - `embed`: looks up each token's embedding vector
 - `add_positions`: adds each position's positional embedding
@@ -18,9 +18,9 @@ Angelina Huang's Lab 3: GPT-2 small written from scratch in NumPy.
 
 Attention is left as a placeholder that returns zeros, so each token cannot see the others.
 
-## Part 2: attention
+## Step 2: GPT-2 with attention
 
-[lab3_part2_angelina_huang.py](lab3_part2_angelina_huang.py) adds:
+[gpt2_with_attention.py](gpt2_with_attention.py) adds:
 
 - `causal_mask`: blocks each token from attending to future tokens
 - `attention`: scaled dot-product attention, `softmax(Q Kᵀ / √d_k) V`
@@ -37,4 +37,9 @@ With attention in place, the forward pass matches the official Hugging Face GPT-
 
 ## Running the tests
 
-The test files import the unnamed module (`lab3_part1` / `lab3_part2`). To run them, change the module name in `test_part1.py` / `test_part2.py` to the `_angelina_huang` file, then run `python3 test_part1.py` or `python3 test_part2.py`.
+Requires Python 3 with NumPy, PyTorch, Hugging Face `transformers` and `tiktoken`. [lab_utils.py](lab_utils.py) loads GPT-2's weights and the tokenizer.
+
+```bash
+python3 test_gpt2_no_attention.py
+python3 test_gpt2_with_attention.py
+```
